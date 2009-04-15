@@ -1,0 +1,124 @@
+Testing PEG ===================================================================
+<peg>--------------------------------------------------------------------------
+testing bindings in #<module peg> ... ok
+test rope->string, expects "abc" ==> ok
+test rope->string, expects "012abcX" ==> ok
+test rope->string, expects #<error> ==> ok
+<primitives>-------------------------------------------------------------------
+test $return (success), expects "xyz" ==> ok
+test $fail (failure), expects (0 ("error")) ==> ok
+test $expect (failure), expects (0 ("character")) ==> ok
+<error handling>---------------------------------------------------------------
+test merge-failure, expects #(fail expect ("a") 1) ==> ok
+test merge-failure (same position), expects #(fail expect ("a" "b") 1) ==> ok
+<string>-----------------------------------------------------------------------
+test $string (success), expects "abc" ==> ok
+test $string) (failure), expects (0 ("ABC")) ==> ok
+test $char (success), expects #\a ==> ok
+test $char (failure), expects (0 (#\a)) ==> ok
+test $one-of (success), expects #\j ==> ok
+test $one-of (failure), expects (0 (#[A-Z])) ==> ok
+test $none-of (success), expects #\j ==> ok
+test $none-of (failure), expects (0 (#[\x00-`{-\x7fÂ€-üŸ¿¿¿¿])) ==> ok
+test $string-ci (success), expects "aBC" ==> ok
+test $string-ci (failure), expects (0 ("abc")) ==> ok
+test anychar (success), expects #\a ==> ok
+test anychar (failure), expects (0 ("character")) ==> ok
+test upper (success), expects #\A ==> ok
+test upper (failure), expects (0 ("upper case letter")) ==> ok
+test lower (success), expects #\a ==> ok
+test lower (failure), expects (0 ("lower case letter")) ==> ok
+test letter (success), expects #\a ==> ok
+test letter (failure), expects (0 ("letter")) ==> ok
+test alphanum (success), expects #\0 ==> ok
+test alphanum (failure), expects (0 ("letter or digit")) ==> ok
+test digit (success), expects #\0 ==> ok
+test digit (failure), expects (0 ("digit")) ==> ok
+test hexdigit (success), expects #\f ==> ok
+test hexdigit (failure), expects (0 ("hexadecimal digit")) ==> ok
+test newline (success), expects #\newline ==> ok
+test newline (failure), expects (0 ("newline")) ==> ok
+test tab (success), expects #\tab ==> ok
+test tab (failure), expects (0 ("tab")) ==> ok
+test space (success), expects #\tab ==> ok
+test space (failure), expects (0 ("space")) ==> ok
+test spaces (success), expects " " ==> ok
+test spaces (success), expects " \n\t" ==> ok
+test $satisfy (success), expects #\0 ==> ok
+test $satisfy (failure), expects (0 ("numeric")) ==> ok
+test eof (success), expects #t ==> ok
+test eof (failure), expects (0 ("end of input")) ==> ok
+<combinators>------------------------------------------------------------------
+test $or (success), expects "foo" ==> ok
+test $or (success), expects "bar" ==> ok
+test $or (failure), expects (0 ("foo" "bar")) ==> ok
+test $do (success), expects "j" ==> ok
+test $do (success), expects "j" ==> ok
+test $do (success), expects ("foo" "bar") ==> ok
+test $do (success), expects ("foo" "baz") ==> ok
+test $do (success), expects "foo" ==> ok
+test $do (failure), expects (3 ("bar")) ==> ok
+test $do (success), expects ("AB" "cd" "EF") ==> ok
+test $do and $or (failure), expects (3 ("foo")) ==> ok
+test $seq (success), expects "b" ==> ok
+test $seq (success), expects "b" ==> ok
+test $seq (failure), expects (1 ("b")) ==> ok
+test $many (success), expects ("a" "b" "a" "a" "b") ==> ok
+test $many (success), expects () ==> ok
+test $many (failure), expects (0 ("a")) ==> ok
+test $many (success), expects ("a" "a") ==> ok
+test $skip-many (success), expects ("a" "a") ==> ok
+test $repeat (success), expects (#\a #\b #\a) ==> ok
+test $repeat (failure), expects (2 ("character")) ==> ok
+test $optional (success), expects #\a ==> ok
+test $optional (success), expects #f ==> ok
+test $sep-by (success), expects (#\a #\b) ==> ok
+test $sep-by (success), expects (#\a #\b #\c) ==> ok
+test $sep-by (success), expects (#\a #\b) ==> ok
+test $sep-by (failure), expects (2 (#[a-c])) ==> ok
+test $end-by (success), expects (#\a #\b) ==> ok
+test $sep-end-by (success), expects (#\a #\b) ==> ok
+test $sep-end-by (success), expects (#\a #\b #\c #\d) ==> ok
+test $sep-end-by (success), expects (#\a #\b) ==> ok
+test $sep-end-by (failure), expects (2 (#[a-c])) ==> ok
+test $count (success), expects (#\a #\b) ==> ok
+test $count (failure), expects (1 (#[ab])) ==> ok
+test $between (success), expects "foo" ==> ok
+test $between (failure), expects (4 (")")) ==> ok
+test $not (success), expects #f ==> ok
+test $not (failure), expects (0 "unexpected: (a)") ==> ok
+test $many-till (success), expects (#\a #\b) ==> ok
+test $chain-left (success), expects 9 ==> ok
+test $chain-left (success), expects 3 ==> ok
+test $chain-left (failure), expects (0 ("digit")) ==> ok
+test $chain-right (success), expects 7 ==> ok
+test $chain-right (success), expects 3 ==> ok
+test $chain-right (failure), expects (0 ("digit")) ==> ok
+test $lazy (success), expects #\a ==> ok
+test $lazy (failure), expects (0 (#\a)) ==> ok
+<backtrack control>------------------------------------------------------------
+test named $or and $cut (success), expects "abc" ==> ok
+test named $or and $cut (failure), expects (3 ("foo")) ==> ok
+<examples>---------------------------------------------------------------------
+test nesting parenthesis (success), expects 3 ==> ok
+test nesting parenthesis (success), expects 3 ==> ok
+test nesting parenthesis (success), expects 3 ==> ok
+test named $or and $cut (failure), expects (1 (#\))) ==> ok
+test CVS (success), expects ("a" "b" "c") ==> ok
+test CVS (success), expects ("a" "b" "c") ==> ok
+test CVS (success), expects ("a  \" \n" "b" "c") ==> ok
+test tag element (success), expects ("a" "") ==> ok
+test tag element (success), expects ("a" "foo" ("b" "bar") "baz") ==> ok
+test calculator (success), expects 11 ==> ok
+test calculator (success), expects 36 ==> ok
+test calculator (success), expects -1 ==> ok
+passed.
+Testing JSON ==================================================================
+testing bindings in #<module json> ... ok
+<parser>-----------------------------------------------------------------------
+test an object, expects (("Image" ("Width" . 800) ("Height" . 600) ("Title" . "View from 15th Floor") ("Thumbnail" ("Url" . "http://www.example.com/image/481989943") ("Height" . 125) ("Width" . "100")) ("IDs" . #(116 943 234 38793)))) ==> ok
+test an array containing two objects, expects #((("precision" . "zip") ("Latitude" . 37.7668) ("Longitude" . -122.3959) ("Address" . "") ("City" . "SAN FRANCISCO") ("State" . "CA") ("Zip" . "94107") ("Country" . "US")) (("precision" . "zip") ("Latitude" . 37.371991) ("Longitude" . -122.02602) ("Address" . "") ("City" . "SUNNYVALE") ("State" . "CA") ("Zip" . "94085") ("Country" . "US"))) ==> ok
+<writer>-----------------------------------------------------------------------
+test an object, expects (("Image" ("Width" . 800) ("Height" . 600) ("Title" . "View from 15th Floor") ("Thumbnail" ("Url" . "http://www.example.com/image/481989943") ("Height" . 125) ("Width" . "100")) ("IDs" . #(116 943 234 38793)))) ==> ok
+test an array containing two objects, expects #((("precision" . "zip") ("Latitude" . 37.7668) ("Longitude" . -122.3959) ("Address" . "") ("City" . "SAN FRANCISCO") ("State" . "CA") ("Zip" . "94107") ("Country" . "US")) (("precision" . "zip") ("Latitude" . 37.371991) ("Longitude" . -122.02602) ("Address" . "") ("City" . "SUNNYVALE") ("State" . "CA") ("Zip" . "94085") ("Country" . "US"))) ==> ok
+passed.

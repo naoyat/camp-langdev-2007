@@ -1,0 +1,9 @@
+Testing mecab =================================================================
+testing bindings in #<module mecab> ... ok
+test mecab-new2, expects #t ==> ok
+test mecab-destroy, expects #f ==> ok
+test mecab-destroy, expects #t ==> ok
+test mecab-sparse-tostr, expects #f ==> ok
+test mecab-strerror, expects #t ==> ok
+test mecab-sparse-tostr, expects "太郎\t名詞,固有名詞,人名,名,*,*,太郎,タロウ,タロー\nは\t助詞,係助詞,*,*,*,*,は,ハ,ワ\n次郎\t名詞,固有名詞,人名,名,*,*,次郎,ジロウ,ジロー\nが\t助詞,格助詞,一般,*,*,*,が,ガ,ガ\n持っ\t動詞,自立,*,*,五段・タ行,連用タ接続,持つ,モッ,モッ\nて\t助詞,接続助詞,*,*,*,*,て,テ,テ\nいる\t動詞,非自立,*,*,一段,基本形,いる,イル,イル\n本\t名詞,一般,*,*,*,*,本,ホン,ホン\nを\t助詞,格助詞,一般,*,*,*,を,ヲ,ヲ\n花子\t名詞,固有名詞,人名,名,*,*,花子,ハナコ,ハナコ\nに\t助詞,格助詞,一般,*,*,*,に,ニ,ニ\n渡し\t動詞,自立,*,*,五段・サ行,連用形,渡す,ワタシ,ワタシ\nた\t助動詞,*,*,*,特殊・タ,基本形,た,タ,タ\n。\t記号,句点,*,*,*,*,。,。,。\nEOS\n" ==> ok
+passed.

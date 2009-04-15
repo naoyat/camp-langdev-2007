@@ -1,0 +1,8 @@
+;; -*-Scheme-*-
+;; Gauche Package Description
+
+(define-gauche-package "Gauche-mecab"
+  :version "0.0"
+  :gauche-version "0.8.11"
+  :configure "./configure "
+)
